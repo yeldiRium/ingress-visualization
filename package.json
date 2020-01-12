@@ -16,8 +16,8 @@
     "test": "yarn run test:lint && yarn run test:jest",
     "test:jest": "jest",
     "test:watch": "jest --watch",
-    "test:lint": "eslint \"**/*.js\"",
-    "test:lint:fix": "eslint --fix \"**/*.js\""
+    "test:lint": "eslint \"src/**/*.js\"",
+    "test:lint:fix": "eslint --fix \"src/**/*.js\""
   },
   "dependencies": {
     "@reduxjs/toolkit": "1.2.1",
@@ -31,6 +31,7 @@
     "redux": "4.0.5",
     "redux-localstorage": "0.4.1",
     "regenerator-runtime": "0.13.3",
+    "reselect": "4.0.0",
     "validate-value": "7.0.0"
   },
   "devDependencies": {

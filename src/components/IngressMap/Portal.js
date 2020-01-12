@@ -2,6 +2,8 @@ import { Circle } from "react-leaflet";
 import L from "leaflet";
 import React from "react";
 
+import { validateReactProp as validatePortal } from "../../elements/portal";
+
 const Portal = ({ portal }) => {
   return (
     <Circle
@@ -13,6 +15,10 @@ const Portal = ({ portal }) => {
       fillOpacity={1}
     />
   );
+};
+
+Portal.propTypes = {
+  portal: validatePortal
 };
 
 export default Portal;

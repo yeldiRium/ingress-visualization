@@ -1,7 +1,7 @@
 import { connect } from "react-redux";
 import React, { useState } from "react";
 
-import validatePortal from "../../validation/validatePortal";
+import { parse as parsePortal } from "../../elements/portal";
 import { actions as ingressMapActions } from "../../store/slices/ingressMap";
 
 const AddAndClearPortals = connect(null, {
@@ -19,19 +19,20 @@ const AddAndClearPortals = connect(null, {
       const data = JSON.parse(textareaValue);
 
       if (!Array.isArray(data)) {
-        validatePortal(data);
+        const portal = parsePortal(data);
 
-        addPortal(data);
+        addPortal(portal);
         setTextareaValue("");
 
         return;
       }
 
+      const portals = [];
       for (const portal of data) {
-        validatePortal(portal);
+        portals.push(parsePortal(portal));
       }
 
-      addPortals(data);
+      addPortals(portals);
       setTextareaValue("");
     } catch (ex) {
       setLoaderError(ex.message);
