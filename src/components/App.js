@@ -1,7 +1,7 @@
 import React from "react";
 
 import AddAndClearPortals from "./PortalManagement/AddAndClearPortals";
-import IngressMap from "./IngressMap";
+import IngressMap from "./IngressMap/IngressMap";
 
 const App = () => (
   <div id="app">

@@ -1,9 +1,10 @@
 import { connect } from "react-redux";
 import L from "leaflet";
 import React from "react";
-import { Circle, Map, TileLayer } from "react-leaflet";
+import { Map, TileLayer } from "react-leaflet";
 
-import centerOfPortals from "../util/centerOfPortals";
+import centerOfPortals from "../../util/centerOfPortals";
+import Portal from "./Portal";
 
 const IngressMap = connect(state => ({
   portals: state.ingressMap.portals
@@ -22,15 +23,7 @@ const IngressMap = connect(state => ({
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       />
       {portals.map((portal, index) => (
-        <Circle
-          key={index}
-          center={L.latLng(portal.lat, portal.lng)}
-          radius={5}
-          color="black"
-          weight={1}
-          fillColor="lightgreen"
-          fillOpacity={1}
-        />
+        <Portal key={index} portal={portal} />
       ))}
     </Map>
   );
