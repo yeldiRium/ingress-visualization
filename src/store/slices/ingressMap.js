@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { createSelector } from "reselect";
 
 const ingressMap = createSlice({
   name: "ingressMap",
@@ -35,6 +36,22 @@ const ingressMap = createSlice({
     }
   }
 });
+
+const selectIngressMap = () => state => state.ingressMap;
+
+const selectPortals = () =>
+  createSelector([selectIngressMap()], ingressMap => ingressMap.portals);
+
+const findPortal = uid =>
+  createSelector([selectPortals()], portals =>
+    portals.find(portal => portal.uid === uid)
+  );
+
+export const selectors = {
+  selectIngressMap,
+  selectPortals,
+  findPortal
+};
 
 export const actions = {
   ...ingressMap.actions
