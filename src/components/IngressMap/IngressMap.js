@@ -5,9 +5,10 @@ import { Map, TileLayer } from "react-leaflet";
 
 import centerOfPortals from "../../util/centerOfPortals";
 import Portal from "./Portal";
+import { selectors } from "../../store/slices/ingressMap";
 
 const IngressMap = connect(state => ({
-  portals: state.ingressMap.portals
+  portals: selectors.selectPortals()(state)
 }))(({ portals }) => {
   let center;
   try {
@@ -22,8 +23,8 @@ const IngressMap = connect(state => ({
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       />
-      {portals.map((portal, index) => (
-        <Portal key={index} portal={portal} />
+      {portals.map(portal => (
+        <Portal key={portal.uid} portal={portal} />
       ))}
     </Map>
   );
