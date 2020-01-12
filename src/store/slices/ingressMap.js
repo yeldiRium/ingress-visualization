@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
 
+import doLinksCross from "../../util/doLinksCross";
 import { validate as validateLink } from "../../elements/link";
 import { validate as validatePortal } from "../../elements/portal";
 
@@ -79,13 +80,36 @@ const selectLinks = () =>
   createSelector([selectIngressMap()], ingressMap => ingressMap.links);
 
 const isLinkPossible = newLink =>
-  createSelector([selectLinks()], existingLinks => true); // TODO: implement
+  createSelector([state => state, selectLinks()], (state, existingLinks) => {
+    const newLinkStart = findPortal(newLink.startPortalUid)(state);
+    const newLinkTarget = findPortal(newLink.targetPortalUid)(state);
+
+    for (const existingLink of existingLinks) {
+      const existingLinkStart = findPortal(existingLink.startPortalUid)(state);
+      const existingLinkTarget = findPortal(existingLink.targetPortalUid)(
+        state
+      );
+      if (
+        doLinksCross(
+          newLinkStart,
+          newLinkTarget,
+          existingLinkStart,
+          existingLinkTarget
+        )
+      ) {
+        return false;
+      }
+    }
+
+    return true;
+  });
 
 export const selectors = {
   selectIngressMap,
   selectPortals,
   findPortal,
-  selectLinks
+  selectLinks,
+  isLinkPossible
 };
 
 /* THUNKS */
