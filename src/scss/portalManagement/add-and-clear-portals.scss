@@ -1,0 +1,20 @@
+.add-and-clear-portals {
+  width: 100%;
+
+  display: grid;
+  grid-template-areas:
+    "textarea textarea"
+    "load     clear";
+
+  textarea {
+    grid-area: textarea;
+  }
+
+  &__load-button {
+    grid-area: load;
+  }
+
+  &__clear-button {
+    grid-area: clear;
+  }
+}
