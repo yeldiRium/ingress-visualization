@@ -1,0 +1,25 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+
+#app {
+  width: 100vw;
+  height: 100vh;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas: "input map";
+}
+
+.input-pane {
+  grid-area: input;
+}
+
+.map-pane {
+  grid-area: map;
+
+  .leaflet-container {
+    height: 100%;
+  }
+}
