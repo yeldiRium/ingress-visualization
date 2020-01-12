@@ -1,4 +1,4 @@
-import { Circle } from "react-leaflet";
+import { Circle, Popup } from "react-leaflet";
 import L from "leaflet";
 import React from "react";
 
@@ -13,7 +13,9 @@ const Portal = ({ portal }) => {
       weight={1}
       fillColor="lightgreen"
       fillOpacity={1}
-    />
+    >
+      <Popup>{portal.uid}</Popup>
+    </Circle>
   );
 };
 
