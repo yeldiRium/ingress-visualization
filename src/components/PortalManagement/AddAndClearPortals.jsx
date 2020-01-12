@@ -10,10 +10,10 @@ const AddAndClearPortals = connect(null, {
   clearPortals: ingressMapActions.clearPortals
 })(({ addPortal, addPortals, clearPortals }) => {
   const [textareaValue, setTextareaValue] = useState("");
-  const [loaderError, setLoaderError] = useState(undefined);
+  const [error, setError] = useState(undefined);
 
   const loadPortals = () => {
-    setLoaderError(undefined);
+    setError(undefined);
 
     try {
       const data = JSON.parse(textareaValue);
@@ -35,7 +35,7 @@ const AddAndClearPortals = connect(null, {
       addPortals(portals);
       setTextareaValue("");
     } catch (ex) {
-      setLoaderError(ex.message);
+      setError(ex.message);
     }
   };
 
@@ -57,7 +57,7 @@ const AddAndClearPortals = connect(null, {
       >
         Clear portals
       </button>
-      {loaderError ? <div>{loaderError}</div> : <></>}
+      {error ? <p className="add-and-clear-links__error">{error}</p> : <></>}
     </div>
   );
 });

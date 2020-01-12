@@ -14,7 +14,11 @@ const Portal = ({ portal }) => {
       fillColor="lightgreen"
       fillOpacity={1}
     >
-      <Popup>{portal.uid}</Popup>
+      <Popup>
+        {portal.uid}
+        <br />
+        {portal.annotation}
+      </Popup>
     </Circle>
   );
 };

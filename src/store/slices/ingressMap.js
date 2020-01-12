@@ -1,6 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
 
+import { validate as validateLink } from "../../elements/link";
+import { validate as validatePortal } from "../../elements/portal";
+
 const ingressMap = createSlice({
   name: "ingressMap",
   initialState: {
@@ -12,6 +15,8 @@ const ingressMap = createSlice({
     addPortal: (state, action) => {
       const portal = action.payload;
 
+      validatePortal(portal);
+
       return {
         portals: [...state.portals, portal],
         links: state.links,
@@ -20,6 +25,10 @@ const ingressMap = createSlice({
     },
     addPortals: (state, action) => {
       const portals = action.payload;
+
+      for (const portal of portals) {
+        validatePortal(portal);
+      }
 
       return {
         portals: [...state.portals, ...portals],
@@ -33,9 +42,28 @@ const ingressMap = createSlice({
         links: state.links,
         fields: state.fields
       };
+    },
+    addLink: (state, action) => {
+      const link = action.payload;
+
+      validateLink(link);
+
+      return {
+        portals: state.portals,
+        links: [...state.links, link]
+      };
+    },
+    clearLinks: state => {
+      return {
+        portals: state.portals,
+        links: [],
+        fields: state.fields // TODO: these should actually change
+      };
     }
   }
 });
+
+/* SELECTORS */
 
 const selectIngressMap = () => state => state.ingressMap;
 
@@ -47,14 +75,50 @@ const findPortal = uid =>
     portals.find(portal => portal.uid === uid)
   );
 
+const selectLinks = () =>
+  createSelector([selectIngressMap()], ingressMap => ingressMap.links);
+
+const isLinkPossible = newLink =>
+  createSelector([selectLinks()], existingLinks => true); // TODO: implement
+
 export const selectors = {
   selectIngressMap,
   selectPortals,
-  findPortal
+  findPortal,
+  selectLinks
+};
+
+/* THUNKS */
+
+const addLinkIfPossible = link => (dispatch, getState) => {
+  validateLink(link);
+
+  const startPortal = findPortal(link.startPortalUid)(getState());
+  const targetPortal = findPortal(link.targetPortalUid)(getState());
+
+  if (startPortal === undefined) {
+    throw new Error(
+      "The start portal could not be found. Please double check the id."
+    );
+  }
+  if (targetPortal === undefined) {
+    throw new Error(
+      "The target portal could not be found. Please double check the id."
+    );
+  }
+
+  if (!isLinkPossible(link)(getState())) {
+    throw new Error(
+      "Cannot link these portals. There is something in the way."
+    );
+  }
+
+  dispatch(ingressMap.actions.addLink(link));
 };
 
 export const actions = {
-  ...ingressMap.actions
+  ...ingressMap.actions,
+  addLinkIfPossible
 };
 
 export default ingressMap.reducer;

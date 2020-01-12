@@ -1,35 +1,35 @@
 import { Value } from "validate-value";
 
-const validate = portal => {
-  const value = new Value({
-    type: "object",
-    properties: {
-      uid: {
-        type: "string"
-      },
-      title: {
-        type: "string"
-      },
-      lat: {
-        type: "number"
-      },
-      lng: {
-        type: "number"
-      },
-      team: {
-        type: "string",
-        enum: ["Enlightened", "Resistance", "unclaimed"]
-      },
-      level: {
-        type: "number"
-      },
-      annotation: {
-        type: "string"
-      }
+const value = new Value({
+  type: "object",
+  properties: {
+    uid: {
+      type: "string"
     },
-    required: ["uid", "title", "lat", "lng"]
-  });
+    title: {
+      type: "string"
+    },
+    lat: {
+      type: "number"
+    },
+    lng: {
+      type: "number"
+    },
+    team: {
+      type: "string",
+      enum: ["Enlightened", "Resistance", "unclaimed"]
+    },
+    level: {
+      type: "number"
+    },
+    annotation: {
+      type: "string"
+    }
+  },
+  required: ["uid", "title", "lat", "lng"]
+});
 
+const validate = portal => {
   value.validate(portal, { valueName: "portal" });
 };
 
@@ -65,9 +65,11 @@ const parse = data => {
   );
 };
 
-const validateReactProp = data => {
+const validateReactProp = (props, propName, componentName) => {
+  const data = props[propName];
+
   try {
-    validate(data);
+    value.validate(data, { valueName: `${componentName}.${propName}` });
 
     return null;
   } catch (ex) {

@@ -4,12 +4,14 @@ import React from "react";
 import { Map, TileLayer } from "react-leaflet";
 
 import centerOfPortals from "../../util/centerOfPortals";
+import Link from "./Link";
 import Portal from "./Portal";
 import { selectors } from "../../store/slices/ingressMap";
 
 const IngressMap = connect(state => ({
-  portals: selectors.selectPortals()(state)
-}))(({ portals }) => {
+  portals: selectors.selectPortals()(state),
+  links: selectors.selectLinks()(state)
+}))(({ portals, links }) => {
   let center;
   try {
     center = centerOfPortals(portals);
@@ -25,6 +27,12 @@ const IngressMap = connect(state => ({
       />
       {portals.map(portal => (
         <Portal key={portal.uid} portal={portal} />
+      ))}
+      {links.map(link => (
+        <Link
+          key={`${link.startPortalUid}-${link.targetPortalUid}`}
+          link={link}
+        />
       ))}
     </Map>
   );

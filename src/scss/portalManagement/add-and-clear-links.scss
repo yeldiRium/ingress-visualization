@@ -1,0 +1,25 @@
+.add-and-clear-links {
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "startPortal targetPortal"
+    "add         clear";
+
+  &__start-portal-uid {
+    grid-area: startPortal;
+  }
+
+  &__target-portal-uid {
+    grid-area: targetPortal;
+  }
+
+  &__add-button {
+    grid-area: add;
+  }
+
+  &__clear-button {
+    grid-area: clear;
+  }
+}
