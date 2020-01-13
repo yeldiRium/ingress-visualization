@@ -1,5 +1,7 @@
+@import "./map/map-control.scss";
 @import "./portalManagement/add-and-clear-links";
 @import "./portalManagement/add-and-clear-portals";
+@import "./portalManagement/selection";
 
 body {
   padding: 0;
@@ -29,8 +31,4 @@ body {
 
 .map-pane {
   grid-area: map;
-
-  .leaflet-container {
-    height: 100%;
-  }
 }

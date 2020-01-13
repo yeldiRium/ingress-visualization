@@ -7,7 +7,7 @@ import { actions as ingressMapActions } from "../../store/slices/ingressMap";
 const AddAndClearPortals = connect(null, {
   addPortal: ingressMapActions.addPortal,
   addPortals: ingressMapActions.addPortals,
-  clearPortals: ingressMapActions.clearPortals
+  clearPortals: ingressMapActions.clear
 })(({ addPortal, addPortals, clearPortals }) => {
   const [textareaValue, setTextareaValue] = useState("");
   const [error, setError] = useState(undefined);

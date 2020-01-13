@@ -2,16 +2,18 @@ import React from "react";
 
 import AddAndClearPortals from "./PortalManagement/AddAndClearPortals";
 import AddAndClearLinks from "./PortalManagement/AddAndClearLinks";
-import IngressMap from "./IngressMap/IngressMap";
+import MapControl from "./MapControl";
+import Selection from "./PortalManagement/Selection";
 
 const App = () => (
   <div id="app">
     <div className="input-pane">
       <AddAndClearPortals />
       <AddAndClearLinks />
+      <Selection />
     </div>
     <div className="map-pane">
-      <IngressMap />
+      <MapControl />
     </div>
   </div>
 );

@@ -4,14 +4,16 @@ import React from "react";
 import { Map, TileLayer } from "react-leaflet";
 
 import centerOfPortals from "../../util/centerOfPortals";
+import { selectors as editorSelectors } from "../../store/slices/editor";
+import { selectors as ingressMapSelectors } from "../../store/slices/ingressMap";
 import Link from "./Link";
 import Portal from "./Portal";
-import { selectors } from "../../store/slices/ingressMap";
 
 const IngressMap = connect(state => ({
-  portals: selectors.selectPortals()(state),
-  links: selectors.selectLinks()(state)
-}))(({ portals, links }) => {
+  portals: ingressMapSelectors.selectPortals()(state),
+  links: ingressMapSelectors.selectLinks()(state),
+  selectedUids: editorSelectors.selectedUids()(state)
+}))(({ portals, links, selectedUids, onPortalClick }) => {
   let center;
   try {
     center = centerOfPortals(portals);
@@ -20,13 +22,18 @@ const IngressMap = connect(state => ({
   }
 
   return (
-    <Map center={center} zoom={13}>
+    <Map center={center} zoom={16}>
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       />
       {portals.map(portal => (
-        <Portal key={portal.uid} portal={portal} />
+        <Portal
+          key={portal.uid}
+          portal={portal}
+          onClick={onPortalClick}
+          highlighted={selectedUids.includes(portal.uid)}
+        />
       ))}
       {links.map(link => (
         <Link

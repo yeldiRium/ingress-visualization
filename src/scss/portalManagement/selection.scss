@@ -1,0 +1,10 @@
+.selection {
+  display: flex;
+  flex-direction: column;
+
+  &__buttons {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+  }
+}

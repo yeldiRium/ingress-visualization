@@ -1,16 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
-// import persistState from "redux-localstorage";
+import persistState from "redux-localstorage";
 
 import reducer from "./slices";
 
 const createStore = () => {
-  // const localstorageEnhancer = persistState([]);
+  const localstorageEnhancer = persistState(["editor", "ingressMap"]);
 
   const store = configureStore({
     reducer,
-    enhancers: [
-      // localstorageEnhancer
-    ]
+    enhancers: [localstorageEnhancer]
   });
 
   return store;

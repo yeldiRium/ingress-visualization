@@ -37,11 +37,33 @@ const ingressMap = createSlice({
         fields: state.fields
       };
     },
-    clearPortals: state => {
+    removePortal: (state, action) => {
+      const portalUid = action.payload;
+
       return {
-        portals: [],
-        links: state.links,
-        fields: state.fields
+        portals: state.portals.filter(portal => portal.uid !== portalUid),
+        links: state.links.filter(
+          link =>
+            link.startPortalUid !== portalUid &&
+            link.targetPortalUid !== portalUid
+        ),
+        fields: state.fields // TODO: this should affect the fields.
+      };
+    },
+    removePortals: (state, action) => {
+      const portalUids = action.payload;
+
+      return {
+        portals: state.portals.filter(
+          portal => !portalUids.some(uid => portal.uid === uid)
+        ),
+        links: state.links.filter(
+          link =>
+            !portalUids.some(
+              uid => link.startPortalUid === uid || link.targetPortalUid === uid
+            )
+        ),
+        fields: state.fields // TODO: this should affect the fields.
       };
     },
     addLink: (state, action) => {
@@ -52,6 +74,13 @@ const ingressMap = createSlice({
       return {
         portals: state.portals,
         links: [...state.links, link]
+      };
+    },
+    clear: () => {
+      return {
+        portals: [],
+        links: [],
+        fields: []
       };
     },
     clearLinks: state => {
