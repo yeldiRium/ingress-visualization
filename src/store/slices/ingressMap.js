@@ -126,6 +126,12 @@ const isLinkPossible = newLink =>
           existingLinkTarget
         )
       ) {
+        console.log({
+          newLinkStart,
+          newLinkTarget,
+          existingLinkStart,
+          existingLinkTarget
+        });
         return false;
       }
     }

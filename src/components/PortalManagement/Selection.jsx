@@ -15,7 +15,6 @@ const Selection = connect(
     clearSelection: editorActions.clearSelection
   }
 )(({ selectedPortals, removePortals, clearSelection }) => {
-  console.log({ selection: selectedPortals });
   if (selectedPortals.length === 0) {
     return <div className="selection">No portal selected.</div>;
   }

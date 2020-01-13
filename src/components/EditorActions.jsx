@@ -6,6 +6,7 @@ import {
   actions as editorActions,
   selectors as editorSelectors
 } from "../store/slices/editor";
+import fanFieldThunk from "../algorithms/fanField";
 import { actions as ingressMapActions } from "../store/slices/ingressMap";
 
 const EditorActions = connect(
@@ -16,7 +17,8 @@ const EditorActions = connect(
   {
     addLinkIfPossible: ingressMapActions.addLinkIfPossible,
     clearSelection: editorActions.clearSelection,
-    startLinkAction: editorActions.startLinkAction
+    startLinkAction: editorActions.startLinkAction,
+    fanField: fanFieldThunk
   }
 )(
   ({
@@ -24,7 +26,8 @@ const EditorActions = connect(
     selectedUids,
     addLinkIfPossible,
     clearSelection,
-    startLinkAction
+    startLinkAction,
+    fanField
   }) => {
     const handleLink = () => {
       if (selectedUids.length > 2) {
@@ -47,6 +50,20 @@ const EditorActions = connect(
       startLinkAction();
     };
 
+    const handleFanField = async () => {
+      if (selectedUids.length < 3) {
+        alert("Cannot fan-field fewer than three portals. Please select more.");
+
+        return;
+      }
+
+      try {
+        await fanField(selectedUids[0], selectedUids[1], selectedUids.slice(2));
+      } catch {
+        alert("That went wrong. Maybe there were links in the way?");
+      }
+    };
+
     return (
       <div className="editor-actions">
         <button
@@ -55,6 +72,9 @@ const EditorActions = connect(
           disabled={activeAction === "link"}
         >
           Link
+        </button>
+        <button className="editor-actions__fan-field" onClick={handleFanField}>
+          Fan Field
         </button>
       </div>
     );
