@@ -1,6 +1,4 @@
 .add-and-clear-links {
-  width: 100%;
-
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-areas:
@@ -9,10 +7,30 @@
 
   &__start-portal-uid {
     grid-area: startPortal;
+
+    display: flex;
+
+    span {
+      padding: 0 10px;
+    }
+
+    input {
+      flex-grow: 1;
+    }
   }
 
   &__target-portal-uid {
     grid-area: targetPortal;
+
+    display: flex;
+
+    span {
+      padding: 0 10px;
+    }
+
+    input {
+      flex-grow: 1;
+    }
   }
 
   &__add-button {

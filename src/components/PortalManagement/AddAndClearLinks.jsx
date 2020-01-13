@@ -28,18 +28,23 @@ const AddAndClearLinks = connect(null, {
 
   return (
     <div className="add-and-clear-links">
-      <input
-        type="text"
-        className="add-and-clear-links__start-portal-uid"
-        value={startPortalUid}
-        onChange={e => setStartPortalUid(e.currentTarget.value)}
-      />
-      <input
-        type="text"
-        className="add-and-clear-links__target-portal-uid"
-        value={targetPortalUid}
-        onChange={e => setTargetPortalUid(e.currentTarget.value)}
-      />
+      <div className="add-and-clear-links__start-portal-uid">
+        <span>Start Portal Uid</span>
+        <input
+          type="text"
+          value={startPortalUid}
+          onChange={e => setStartPortalUid(e.currentTarget.value)}
+        />
+      </div>
+      <div className="add-and-clear-links__target-portal-uid">
+        <span>Target Portal Uid</span>
+        <input
+          type="text"
+          className="add-and-clear-links__target-portal-uid"
+          value={targetPortalUid}
+          onChange={e => setTargetPortalUid(e.currentTarget.value)}
+        />
+      </div>
       <button
         className="add-and-clear-links__add-button"
         onClick={handleAddLink}
