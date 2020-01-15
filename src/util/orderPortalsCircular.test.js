@@ -1,13 +1,13 @@
 import L from "leaflet";
 
-import orderCircular from "./orderCircular";
+import orderPortalsCircular from "./orderPortalsCircular";
 
-describe("orderCircular", () => {
+describe("orderPortalsCircular", () => {
   it("does nothing to an array with one element", () => {
     const center = L.latLng(0, 0);
     const latLngsToOrder = [L.latLng(1, 1)];
 
-    const sortedLatLngs = orderCircular(latLngsToOrder, center);
+    const sortedLatLngs = orderPortalsCircular(latLngsToOrder, center);
 
     expect(sortedLatLngs).toEqual([0]);
   });
@@ -16,7 +16,7 @@ describe("orderCircular", () => {
     const center = L.latLng(0, 0);
     const latLngsToOrder = [L.latLng(1, -1), L.latLng(1, 1), L.latLng(1, 0)];
 
-    const sortedLatLngs = orderCircular(latLngsToOrder, center);
+    const sortedLatLngs = orderPortalsCircular(latLngsToOrder, center);
 
     expect(sortedLatLngs).toEqual([0, 2, 1]);
   });
@@ -26,11 +26,11 @@ describe("orderCircular", () => {
     const latLngsToOrder = [
       L.latLng(1, -1),
       L.latLng(1, 1),
-      L.latLng(1, -1),
+      L.latLng(1, -2),
       L.latLng(-1, -1)
     ];
 
-    const sortedLatLngs = orderCircular(latLngsToOrder, center, false);
+    const sortedLatLngs = orderPortalsCircular(latLngsToOrder, center, false);
 
     expect(sortedLatLngs).toEqual([0, 2, 3, 1]);
   });

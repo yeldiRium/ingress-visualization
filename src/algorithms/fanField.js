@@ -1,8 +1,9 @@
-import { cross } from "geometric/src/utils/crossProduct";
 import L from "leaflet";
 
 import createLink from "../elements/link";
-import orderCircular from "../util/orderCircular";
+import orderPortalsCircular from "../util/orderPortalsCircular";
+import Segment from "../math/Segment";
+import Vector from "../math/Vector";
 import {
   actions as ingressMapActions,
   selectors as ingressMapSelectors
@@ -28,8 +29,9 @@ const fanField = (
   const anchorPortal = ingressMapSelectors.findPortal(anchorPortalUid)(
     getState()
   );
+  const anchorVector = new Vector(anchorPortal.lng, anchorPortal.lat);
 
-  const circularOrderedIndexes = orderCircular(
+  const circularOrderedIndexes = orderPortalsCircular(
     portals.map(portal => L.latLng(portal.lat, portal.lng)),
     L.latLng(anchorPortal.lat, anchorPortal.lng),
     clockwise
@@ -49,20 +51,19 @@ const fanField = (
     console.log("link to anchor", { portal });
     await sleep(500);
 
+    const portalVector = new Vector(portal.lng, portal.lat);
     for (const previousPortal of orderedPortals.slice(0, visitIndex)) {
       const link = createLink(portal.uid, previousPortal.uid);
 
-      const directionComparisonFunction = clockwise
-        ? (point, line) => cross(point, line[0], line[1]) > 0
-        : (point, line) => cross(point, line[0], line[1]) < 0;
-
-      const inRightDirection = directionComparisonFunction(
-        [anchorPortal.lng, anchorPortal.lat],
-        [
-          [portal.lng, portal.lat],
-          [previousPortal.lng, previousPortal.lat]
-        ]
+      const previousPortalVector = new Vector(
+        previousPortal.lng,
+        previousPortal.lat
       );
+      const newLinkSegment = new Segment(portalVector, previousPortalVector);
+
+      const inRightDirection = clockwise
+        ? anchorVector.leftFromSegment(newLinkSegment)
+        : anchorVector.rightFromSegment(newLinkSegment);
 
       if (
         inRightDirection &&

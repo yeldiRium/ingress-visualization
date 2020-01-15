@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createSelector } from "reselect";
 
-import doLinksCross from "../../util/doLinksCross";
+import Segment from "../../math/Segment";
 import { validate as validateLink } from "../../elements/link";
 import { validate as validatePortal } from "../../elements/portal";
+import Vector from "../../math/Vector";
 
 const ingressMap = createSlice({
   name: "ingressMap",
@@ -113,25 +114,23 @@ const isLinkPossible = newLink =>
     const newLinkStart = findPortal(newLink.startPortalUid)(state);
     const newLinkTarget = findPortal(newLink.targetPortalUid)(state);
 
+    const newLinkSegment = new Segment(
+      new Vector(newLinkStart.lng, newLinkStart.lat),
+      new Vector(newLinkTarget.lng, newLinkTarget.lat)
+    );
+
     for (const existingLink of existingLinks) {
       const existingLinkStart = findPortal(existingLink.startPortalUid)(state);
       const existingLinkTarget = findPortal(existingLink.targetPortalUid)(
         state
       );
-      if (
-        doLinksCross(
-          newLinkStart,
-          newLinkTarget,
-          existingLinkStart,
-          existingLinkTarget
-        )
-      ) {
-        console.log({
-          newLinkStart,
-          newLinkTarget,
-          existingLinkStart,
-          existingLinkTarget
-        });
+
+      const existingLinkSegment = new Segment(
+        new Vector(existingLinkStart.lng, existingLinkStart.lat),
+        new Vector(existingLinkTarget.lng, existingLinkTarget.lat)
+      );
+
+      if (newLinkSegment.intersects(existingLinkSegment, true)) {
         return false;
       }
     }
