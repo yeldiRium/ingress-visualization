@@ -49,7 +49,7 @@ const fanField = (
       )
     );
     console.log("link to anchor", { portal });
-    await sleep(500);
+    await sleep(100);
 
     const portalVector = new Vector(portal.lng, portal.lat);
     for (const previousPortal of orderedPortals.slice(0, visitIndex)) {
@@ -71,7 +71,7 @@ const fanField = (
       ) {
         dispatch(ingressMapActions.addLinkIfPossible(link));
         console.log("link to previous", { previousPortal });
-        await sleep(500);
+        await sleep(100);
       } else {
         console.log("skip link to previous", {
           previousPortal,
