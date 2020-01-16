@@ -13,6 +13,10 @@
   &__row-button {
     cursor: pointer;
 
+    background-color: transparent;
+    border: 0;
+    padding: 0;
+
     &-first {
       grid-area: first;
     }

@@ -16,6 +16,12 @@ const editor = createSlice({
         selection: state.selection
       };
     },
+    startSelectAction: state => {
+      return {
+        activeAction: "select",
+        selection: state.selection
+      };
+    },
     clearAction: state => {
       return {
         activeAction: null,
@@ -40,6 +46,14 @@ const editor = createSlice({
       return {
         activeAction: state.activeAction,
         selection: [...state.selection, portalUid]
+      };
+    },
+    setSelection: (state, action) => {
+      const selectedPortalUids = action.payload;
+
+      return {
+        activeAction: state.activeAction,
+        selection: selectedPortalUids
       };
     },
     removePortalFromSelection: (state, action) => {

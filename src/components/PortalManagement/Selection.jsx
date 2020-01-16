@@ -31,14 +31,17 @@ const Selection = connect(
   };
 
   const handleMoveToFirst = index => {
+    console.log("first");
     movePortal({ from: index, to: 0 });
   };
 
   const handleMoveUp = index => {
+    console.log("up");
     movePortal({ from: index, to: index - 1 });
   };
 
   const handleMoveDown = index => {
+    console.log("down");
     movePortal({ from: index, to: index + 1 });
   };
 
@@ -86,21 +89,27 @@ const Selection = connect(
               <td className="selection__row-buttons">
                 {index !== 0 ? (
                   <>
-                    <i
-                      className="selection__row-button selection__row-button-first fas fa-arrow-up"
+                    <button
+                      className="selection__row-button selection__row-button-first"
                       onClick={() => handleMoveToFirst(index)}
-                    ></i>
-                    <i
-                      className="selection__row-button selection__row-button-up fas fa-chevron-up"
+                    >
+                      <i className="fas fa-arrow-up"></i>
+                    </button>
+                    <button
+                      className="selection__row-button selection__row-button-up"
                       onClick={() => handleMoveUp(index)}
-                    ></i>
+                    >
+                      <i className="fas fa-chevron-up"></i>
+                    </button>
                   </>
                 ) : null}
                 {index !== selectedPortals.length - 1 ? (
-                  <i
-                    className="selection__row-button selection__row-button-down fas fa-chevron-down"
+                  <button
+                    className="selection__row-button selection__row-button-down"
                     onClick={() => handleMoveDown(index)}
-                  ></i>
+                  >
+                    <i className="fas fa-chevron-down"></i>
+                  </button>
                 ) : null}
               </td>
             </tr>

@@ -17,7 +17,9 @@ const EditorActions = connect(
   {
     addLinkIfPossible: ingressMapActions.addLinkIfPossible,
     clearSelection: editorActions.clearSelection,
+    clearAction: editorActions.clearAction,
     startLinkAction: editorActions.startLinkAction,
+    startSelectAction: editorActions.startSelectAction,
     fanField: fanFieldThunk
   }
 )(
@@ -26,9 +28,19 @@ const EditorActions = connect(
     selectedUids,
     addLinkIfPossible,
     clearSelection,
+    clearAction,
     startLinkAction,
+    startSelectAction,
     fanField
   }) => {
+    const handleClear = () => {
+      clearAction();
+    };
+
+    const handleSelect = () => {
+      startSelectAction();
+    };
+
     const handleLink = () => {
       if (selectedUids.length > 2) {
         alert("Cannot link more than two portals. Please select fewer.");
@@ -66,6 +78,20 @@ const EditorActions = connect(
 
     return (
       <div className="editor-actions">
+        <button
+          className="editor-actions__clear"
+          onClick={handleClear}
+          disabled={activeAction === null}
+        >
+          None
+        </button>
+        <button
+          className="editor-actions__select"
+          onClick={handleSelect}
+          disabled={activeAction === "select"}
+        >
+          Select
+        </button>
         <button
           className="editor-actions__link"
           onClick={handleLink}
