@@ -1,11 +1,11 @@
-import { Circle } from "react-leaflet";
+import { Circle, Tooltip } from "react-leaflet";
 import L from "leaflet";
 import PropTypes from "prop-types";
 import React from "react";
 
 import { validateReactProp as validatePortal } from "../../elements/portal";
 
-const Portal = ({ portal, highlighted, onClick }) => {
+const Portal = ({ portal, highlighted, onClick, annotation }) => {
   const handleClick = event => {
     onClick(portal, event.originalEvent.shiftKey);
   };
@@ -22,7 +22,9 @@ const Portal = ({ portal, highlighted, onClick }) => {
         fillColor="lightgreen"
         fillOpacity={0.7}
         onClick={handleClick}
-      />
+      >
+        <Tooltip>{annotation}</Tooltip>
+      </Circle>
       {highlighted ? (
         <Circle
           center={center}
@@ -39,7 +41,8 @@ const Portal = ({ portal, highlighted, onClick }) => {
 Portal.propTypes = {
   portal: validatePortal,
   onClick: PropTypes.func,
-  highlighted: PropTypes.bool
+  highlighted: PropTypes.bool,
+  annotation: PropTypes.string
 };
 
 export default Portal;

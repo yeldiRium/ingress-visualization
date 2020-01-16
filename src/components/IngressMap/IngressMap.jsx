@@ -22,19 +22,33 @@ const IngressMap = connect(state => ({
   }
 
   return (
-    <Map center={center} zoom={16}>
+    <Map
+      center={center}
+      zoom={16}
+      boxZoom={false}
+      onMouseDown={console.log}
+      onMouseUp={console.log}
+    >
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       />
-      {portals.map(portal => (
-        <Portal
-          key={portal.uid}
-          portal={portal}
-          onClick={onPortalClick}
-          highlighted={selectedUids.includes(portal.uid)}
-        />
-      ))}
+      {portals.map(portal => {
+        const highlighted = selectedUids.includes(portal.uid);
+        const annotation = `${
+          highlighted ? `${selectedUids.indexOf(portal.uid)} - ` : ""
+        }${portal.title}`;
+
+        return (
+          <Portal
+            key={portal.uid}
+            portal={portal}
+            onClick={onPortalClick}
+            highlighted={highlighted}
+            annotation={annotation}
+          />
+        );
+      })}
       {links.map(link => (
         <Link
           key={`${link.startPortalUid}-${link.targetPortalUid}`}

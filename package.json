@@ -20,6 +20,7 @@
     "test:lint:fix": "eslint --fix \"src/**/*.js\""
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "5.12.0",
     "@reduxjs/toolkit": "1.2.1",
     "core-js": "3.6.3",
     "leaflet": "1.6.0",

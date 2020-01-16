@@ -12,9 +12,10 @@ const Selection = connect(
   state => ({ selectedPortals: editorSelectors.selectedPortals()(state) }),
   {
     removePortals: ingressMapActions.removePortals,
-    clearSelection: editorActions.clearSelection
+    clearSelection: editorActions.clearSelection,
+    movePortal: editorActions.movePortalInSelection
   }
-)(({ selectedPortals, removePortals, clearSelection }) => {
+)(({ selectedPortals, removePortals, clearSelection, movePortal }) => {
   if (selectedPortals.length === 0) {
     return <div className="selection">No portal selected.</div>;
   }
@@ -27,6 +28,18 @@ const Selection = connect(
 
   const handleClearSelection = () => {
     clearSelection();
+  };
+
+  const handleMoveToFirst = index => {
+    movePortal({ from: index, to: 0 });
+  };
+
+  const handleMoveUp = index => {
+    movePortal({ from: index, to: index - 1 });
+  };
+
+  const handleMoveDown = index => {
+    movePortal({ from: index, to: index + 1 });
   };
 
   const Buttons = () => (
@@ -62,13 +75,34 @@ const Selection = connect(
           <tr>
             <th>Uid</th>
             <th>Title</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {selectedPortals.map(portal => (
+          {selectedPortals.map((portal, index) => (
             <tr key={portal.uid}>
-              <td>{portal.uid}</td>
+              <td>{portal.uid.slice(0, 5)}</td>
               <td>{portal.title}</td>
+              <td className="selection__row-buttons">
+                {index !== 0 ? (
+                  <>
+                    <i
+                      className="selection__row-button selection__row-button-first fas fa-arrow-up"
+                      onClick={() => handleMoveToFirst(index)}
+                    ></i>
+                    <i
+                      className="selection__row-button selection__row-button-up fas fa-chevron-up"
+                      onClick={() => handleMoveUp(index)}
+                    ></i>
+                  </>
+                ) : null}
+                {index !== selectedPortals.length - 1 ? (
+                  <i
+                    className="selection__row-button selection__row-button-down fas fa-chevron-down"
+                    onClick={() => handleMoveDown(index)}
+                  ></i>
+                ) : null}
+              </td>
             </tr>
           ))}
         </tbody>

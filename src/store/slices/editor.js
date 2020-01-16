@@ -54,6 +54,14 @@ const editor = createSlice({
         selection: state.selection.filter(uid => uid !== portalUid)
       };
     },
+    movePortalInSelection: (state, action) => {
+      const { from, to } = action.payload;
+
+      const portal = state.selection[from];
+
+      state.selection.splice(from, 1);
+      state.selection.splice(to, 0, portal);
+    },
     clearSelection: state => {
       return {
         activeAction: state.activeAction,
