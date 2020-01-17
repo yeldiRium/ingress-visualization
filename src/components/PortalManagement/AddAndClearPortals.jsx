@@ -2,13 +2,15 @@ import { connect } from "react-redux";
 import React, { useState } from "react";
 
 import { parse as parsePortal } from "../../elements/portal";
+import { actions as editorActions } from "../../store/slices/editor";
 import { actions as ingressMapActions } from "../../store/slices/ingressMap";
 
 const AddAndClearPortals = connect(null, {
   addPortal: ingressMapActions.addPortal,
   addPortals: ingressMapActions.addPortals,
-  clearPortals: ingressMapActions.clear
-})(({ addPortal, addPortals, clearPortals }) => {
+  clearPortals: ingressMapActions.clear,
+  clearSelection: editorActions.clearSelection
+})(({ addPortal, addPortals, clearPortals, clearSelection }) => {
   const [textareaValue, setTextareaValue] = useState("");
   const [error, setError] = useState(undefined);
 
@@ -53,7 +55,10 @@ const AddAndClearPortals = connect(null, {
       </button>
       <button
         className="add-and-clear-portals__clear-button"
-        onClick={() => clearPortals()}
+        onClick={() => {
+          clearPortals();
+          clearSelection();
+        }}
       >
         Clear portals
       </button>
