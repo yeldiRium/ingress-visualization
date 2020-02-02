@@ -39,16 +39,30 @@ const fanField = (
 
   const orderedPortals = circularOrderedIndexes.map(index => portals[index]);
 
-  console.log({ orderedPortals });
+  let orders = {};
+
+  orders[anchorPortal.uid] = {
+    index: -1,
+    title: anchorPortal.title,
+    links: [],
+    keys: 0
+  };
 
   let visitIndex = 0;
   for (const portal of orderedPortals) {
+    orders[portal.uid] = {
+      index: visitIndex,
+      title: portal.title,
+      links: [anchorPortal.title],
+      keys: 0
+    };
+    orders[anchorPortal.uid].keys++;
+
     dispatch(
       ingressMapActions.addLinkIfPossible(
         createLink(portal.uid, anchorPortalUid)
       )
     );
-    console.log("link to anchor", { portal });
     await sleep(100);
 
     const portalVector = new Vector(portal.lng, portal.lat);
@@ -69,19 +83,33 @@ const fanField = (
         inRightDirection &&
         ingressMapSelectors.isLinkPossible(link)(getState())
       ) {
+        orders[portal.uid].links.push(previousPortal.title);
+        orders[previousPortal.uid].keys++;
+
         dispatch(ingressMapActions.addLinkIfPossible(link));
-        console.log("link to previous", { previousPortal });
         await sleep(100);
-      } else {
-        console.log("skip link to previous", {
-          previousPortal,
-          inRightDirection
-        });
       }
     }
 
     visitIndex++;
   }
+  console.log(
+    Object.values(orders)
+      .sort((left, right) => left.index - right.index)
+      .map(
+        portal =>
+          `[${String(portal.index).padStart(2, "0")}] Go to '${
+            portal.title
+          }'.\n     Collect ${portal.keys} key${portal.keys === 1 ? "" : "s"}.${
+            portal.links.length > 0
+              ? `\n     Link to ${portal.links
+                  .map(portalTitle => `'${portalTitle}'`)
+                  .join(", ")}.`
+              : ""
+          }`
+      )
+      .join("\n\n")
+  );
 };
 
 export default fanField;
