@@ -1,0 +1,11 @@
+version: "3.2"
+
+services:
+  ingress-visualization:
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile
+    ports:
+      - 8080:8080
+    volumes:
+      - ../src:/app/src

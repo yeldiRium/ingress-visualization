@@ -12,7 +12,7 @@
     "clean": "rm -rf dist",
     "build": "yarn run clean && webpack --mode=production",
     "build:dev": "yarn run clean && webpack --mode=development",
-    "serve": "webpack-dev-server",
+    "serve": "webpack-dev-server --host 0.0.0.0",
     "test": "yarn run test:lint && yarn run test:jest",
     "test:jest": "jest",
     "test:watch": "jest --watch",
