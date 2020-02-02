@@ -40,6 +40,7 @@ const fanField = (
   const orderedPortals = circularOrderedIndexes.map(index => portals[index]);
 
   let orders = {};
+  let fieldCount = 0;
 
   orders[anchorPortal.uid] = {
     index: -1,
@@ -63,9 +64,10 @@ const fanField = (
         createLink(portal.uid, anchorPortalUid)
       )
     );
-    await sleep(100);
+    await sleep(10);
 
     const portalVector = new Vector(portal.lng, portal.lat);
+    let firstLink = true;
     for (const previousPortal of orderedPortals.slice(0, visitIndex)) {
       const link = createLink(portal.uid, previousPortal.uid);
 
@@ -87,7 +89,13 @@ const fanField = (
         orders[previousPortal.uid].keys++;
 
         dispatch(ingressMapActions.addLinkIfPossible(link));
-        await sleep(100);
+        if (firstLink) {
+          firstLink = false;
+          fieldCount += 1;
+        } else {
+          fieldCount += 2;
+        }
+        await sleep(10);
       }
     }
 
@@ -110,6 +118,7 @@ const fanField = (
       )
       .join("\n\n")
   );
+  console.log(`Created ${fieldCount} fields.`);
 };
 
 export default fanField;
